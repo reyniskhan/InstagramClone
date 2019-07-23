@@ -1,5 +1,6 @@
 package com.example.instagramclone;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
-    private Button btnKickBoxer,btnGetAllData;
+    private Button btnKickBoxer,btnGetAllData, btnTransition;
     private EditText name,punchSpeed,punchPower,kickSpeed,kickPower;
     private TextView txtGetData;
     private String allKickBoxers;
@@ -41,6 +42,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         kickSpeed = findViewById(R.id.kickSpeed);
         txtGetData = findViewById(R.id.txtGetData);
         btnGetAllData = findViewById(R.id.btnGetAllData);
+        btnTransition = findViewById(R.id.btnTransition);
         btnKickBoxer.setOnClickListener(SignUp.this);
 
         txtGetData.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +68,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
             public void onClick(View view) {
                 allKickBoxers = "";
                 ParseQuery<ParseObject> queryall = ParseQuery.getQuery("kickBoxer");
+
+                queryall.whereGreaterThan("PunchPower",100);
+                queryall.setLimit(1);
+
                 queryall.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> objects, ParseException e) {
@@ -80,6 +86,17 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                         }
                     }
                 });
+            }
+        });
+
+        btnTransition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(SignUp.this,
+                        SignUpLoginActivity.class);
+                startActivity(intent);
+
             }
         });
     }
